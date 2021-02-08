@@ -77,6 +77,34 @@ class Game:
 
         return generate_final_path(current_state)
 
+    def depth_limited_search(self, current_state, depth=0, generated=0):
+        if current_state.is_goal_state():
+            print("Generated: ", generated)
+            return current_state
+
+        if depth <= 0:  # Check to see if we reached the maximum depth
+            return None
+
+        actions = current_state.get_possible_actions()
+        for action in actions:
+            new_state = self.depth_limited_search(current_state.get_child_node(action), depth - 1, generated + 1)
+            if new_state is not None:
+                return new_state
+
+        return None
+
+    def iterative_deepening_search(self):
+        max_depth = 0
+        generated = 0
+        while True:
+            for i in range(max_depth):
+                state = self.depth_limited_search(self.initial_node, max_depth, generated)
+                if state is not None:
+                    return state
+            max_depth += 1
+
+        return None
+
 
 if __name__ == '__main__':
     g = Game()
@@ -86,3 +114,6 @@ if __name__ == '__main__':
     print("\nDepth-First Search: ")
     path = g.depth_first_search()
     print_path(path, True, "\t")
+    # print("\nIterative Deepening (Depth-First) Search:")
+    # path = g.iterative_deepening_search()
+    # print_path(path, True, "\t")
