@@ -6,22 +6,21 @@ def is_valid(state):
     :return: True if the tuple is valid, False otherwise
     """
     if (0 <= state[0] <= 3) and (0 <= state[1] <= 3) and (0 <= state[2] <= 1):  # Check values are valid
-        if state[0] == 0 or state[0] >= state[1]:
-            # No missionaries or the number of missionaries is greater than or equal to cannibals
+        if state[0] == 0 or state[0] >= state[1]:  # No Cowboys or the number of Cowboys <= Robots
             return True
     return False
 
 
 class Node:
-    def __init__(self, m_wrong_side=3, c_wrong_side=3, boat_wrong_side=1, parent=None):
+    def __init__(self, c_wrong_side=3, r_wrong_side=3, boat_wrong_side=1, parent=None):
         """
         Creates a node representing a state in the "game" with the given parameters
-        :param m_wrong_side: Number of missionaries on the wrong (left) side (maximum of 3 is allowed in either side)
-        :param c_wrong_side: Number of cannibals on the wrong (left) side (maximum of 3 is allowed in either side)
+        :param c_wrong_side: Number of Cowboys on the wrong (left) side (maximum of 3 is allowed in either side)
+        :param r_wrong_side: Number of Robots on the wrong (left) side (maximum of 3 is allowed in either side)
         :param boat_wrong_side: Whether the boat is on the wrong (left) side or not (1 - left, 0 - right)
         :param parent: the parent node (used to find the path taken to reach the current state)
         """
-        self.state = (m_wrong_side, c_wrong_side, boat_wrong_side)  # Num of m, c, boat side
+        self.state = (c_wrong_side, r_wrong_side, boat_wrong_side)  # Num of m, c, boat side
         self.parent = parent
 
     def __str__(self):
@@ -54,16 +53,16 @@ class Node:
     def get_possible_actions(self):
         """
         Finds all the possible actions for the current node (state)
-        :return:
+        :return: A list of all the possible actions
         """
         actions = [(1, 0, 1), (2, 0, 1), (1, 1, 1), (0, 1, 1), (0, 2, 1)]  # List of actions we can do
         possible_actions = []  # List of available (possible) actions
         for action in actions:  # Loop through all actions and check their validity (if they can be done)
             new_state_left = self.get_resulting_state(action)  # Get the wrong side state
-            new_m_right = 3 - new_state_left[0]
-            new_c_right = 3 - new_state_left[1]
+            new_c_right = 3 - new_state_left[0]
+            new_r_right = 3 - new_state_left[1]
             new_b_right = 1 - new_state_left[2]
-            new_state_right = (new_m_right, new_c_right, new_b_right)  # Generate the right side state
+            new_state_right = (new_c_right, new_r_right, new_b_right)  # Generate the right side state
             if is_valid(new_state_left) and is_valid(new_state_right):  # Check that both resulting states are valid
                 possible_actions.append(action)
         return possible_actions
@@ -75,14 +74,14 @@ class Node:
         :return: The state after the resulting action
         """
         if self.state[2] == 1:  # Boat is going: left --> right (vector subtraction)
-            new_m = self.state[0] - action[0]
-            new_c = self.state[1] - action[1]
+            new_c = self.state[0] - action[0]
+            new_r = self.state[1] - action[1]
             new_b = self.state[2] - action[2]
         else:  # Boat is going: left <-- right (vector addition)
-            new_m = self.state[0] + action[0]
-            new_c = self.state[1] + action[1]
+            new_c = self.state[0] + action[0]
+            new_r = self.state[1] + action[1]
             new_b = self.state[2] + action[2]
-        return new_m, new_c, new_b  # Return the resulting values as a tuple (state)
+        return new_c, new_r, new_b  # Return the resulting values as a tuple (state)
 
     def get_child_node(self, action):
         """
