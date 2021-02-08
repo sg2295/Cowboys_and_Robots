@@ -35,7 +35,7 @@ class Game:
     def breadth_first_search(self):
         """
         Uses the Breadth-First Search algorithm to find a solution to the problem.
-        :return: The path taken to reach the solution if it exists (in the form of a list), None otherwise
+        :return: The path taken to reach a solution if it exists (in the form of a list), None otherwise
         """
         frontier = [self.initial_node]  # Queue
         explored = []
@@ -64,7 +64,7 @@ class Game:
     def depth_first_search(self):
         """
         Uses the Depth-First Search algorithm to find a solution to the problem.
-        :return: The path taken to reach the solution if it exists (in the form of a list), None otherwise
+        :return: The path taken to reach a solution if it exists (in the form of a list), None otherwise
         """
         frontier = [self.initial_node]  # Stack
         explored = []
@@ -129,12 +129,13 @@ class Game:
 
 if __name__ == '__main__':
     g = Game()
+    # Test each algorithm individually:
     print("Breadth-First Search:")
-    path = g.breadth_first_search()
-    print_path(path, "\t")
+    path = g.breadth_first_search()  # BFS
+    print_path(path, "\t")  # Print the path taken to reach the solution
     print("\nDepth-First Search: ")
-    path = g.depth_first_search()
+    path = g.depth_first_search()  # DFS
     print_path(path, "\t")
     print("\nIterative Deepening (Depth-First) Search:")
-    path = g.iterative_deepening_search()
+    path = g.iterative_deepening_search()  # IDS
     print_path(path, "\t")
