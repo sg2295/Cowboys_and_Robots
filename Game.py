@@ -26,6 +26,10 @@ def print_path(path, spec_char=""):
 
 
 class Game:
+    """
+    This class represents the Cowboys and Robots problem.
+    Provides different algorithms for solving the problem (BFS, DFS, IDS)
+    """
     def __init__(self):
         """
         Creates a default Node object - the starting state condition

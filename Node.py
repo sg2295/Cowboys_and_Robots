@@ -12,6 +12,10 @@ def is_valid(state):
 
 
 class Node:
+    """
+    This class represents a node (state, parent) for the Cowboys and Robots problem.
+    It has the ability to find the path a node took, to reach the goal state, using its' parents.
+    """
     def __init__(self, c_wrong_side=3, r_wrong_side=3, boat_wrong_side=1, parent=None):
         """
         Creates a node representing a state in the "game" with the given parameters
